@@ -10,8 +10,8 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["packages/shared/src/*"],
-      "@rules/*": ["packages/rules/src/*"]
+      "@news/shared/*": ["packages/shared/src/*"],
+      "@news/rules/*": ["packages/rules/src/*"]
     }
   }
 }

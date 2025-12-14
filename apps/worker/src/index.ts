@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { translateAndSummarize } from './handlers/translationHandler';
-import { createLogger } from '@shared';
+import { createLogger } from '@news/shared';
 
 dotenv.config();
 const logger = createLogger('worker');

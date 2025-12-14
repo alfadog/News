@@ -1,4 +1,4 @@
-import { RoutingRule, RuleContext, Story } from '@shared/types/content';
+import { RoutingRule, RuleContext, Story } from '@news/shared/types/content';
 
 export interface RoutingResult {
   site?: string;
