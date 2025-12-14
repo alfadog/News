@@ -1,6 +1,10 @@
-import { Admin } from '@payloadcms/next/admin/app';
-import payloadConfig from '../../../payload/payload.config';
+import { redirect } from 'next/navigation';
 
 export const dynamic = 'force-dynamic';
 
-export default Admin({ config: payloadConfig });
+const baseURL = (process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:4000').replace(/\/$/, '');
+
+export default function AdminRedirect({ params }: { params: { slug?: string[] } }) {
+  const slugPath = params.slug?.length ? `/${params.slug.join('/')}` : '';
+  redirect(`${baseURL}/admin${slugPath}`);
+}

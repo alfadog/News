@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
 import { RawItem } from '@news/shared';
 
-const baseURL = process.env.PAYLOAD_REST_URL || 'http://localhost:3000/api';
+const baseURL =
+  process.env.PAYLOAD_REST_URL || `${(process.env.PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:4000').replace(/\/$/, '')}/api`;
 const token = process.env.PAYLOAD_API_KEY;
 
 export async function createRawItem(rawItem: RawItem) {
