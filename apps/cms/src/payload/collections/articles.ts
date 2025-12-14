@@ -5,6 +5,7 @@ export const Articles: CollectionConfig = {
   admin: { useAsTitle: 'title' },
   access: { read: () => true },
   fields: [
+    { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'site', type: 'relationship', relationTo: 'sites', required: true },
     { name: 'story', type: 'relationship', relationTo: 'stories' },
     { name: 'section', type: 'relationship', relationTo: 'sections', required: true },
@@ -14,10 +15,17 @@ export const Articles: CollectionConfig = {
     { name: 'locale', type: 'text', required: true },
     { name: 'title', type: 'text', required: true },
     { name: 'dek', type: 'textarea' },
-    { name: 'body', type: 'richText', required: true },
+    { name: 'body', type: 'textarea', required: true },
     { name: 'leadImage', type: 'text' },
     { name: 'gallery', type: 'array', fields: [{ name: 'url', type: 'text' }] },
-    { name: 'sourceRefs', type: 'array', fields: [{ name: 'ref', type: 'text' }] },
+    {
+      name: 'sourceRefs',
+      type: 'array',
+      fields: [
+        { name: 'url', type: 'text', required: true },
+        { name: 'label', type: 'text' }
+      ]
+    },
     { name: 'aiMeta', type: 'json' },
     {
       name: 'status',

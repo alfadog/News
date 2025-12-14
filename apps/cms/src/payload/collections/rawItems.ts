@@ -14,6 +14,7 @@ export const RawItems: CollectionConfig = {
     { name: 'rawHtml', type: 'textarea' },
     { name: 'language', type: 'text' },
     { name: 'fingerprint', type: 'text' },
+    { name: 'article', type: 'relationship', relationTo: 'articles' },
     {
       name: 'status',
       type: 'select',
@@ -21,10 +22,12 @@ export const RawItems: CollectionConfig = {
         { label: 'New', value: 'new' },
         { label: 'Parsed', value: 'parsed' },
         { label: 'Error', value: 'error' },
-        { label: 'Ignored', value: 'ignored' }
+        { label: 'Ignored', value: 'ignored' },
+        { label: 'Processed', value: 'processed' }
       ],
       defaultValue: 'new'
     },
+    { name: 'processedAt', type: 'date' },
     { name: 'debug', type: 'json' }
   ]
 };

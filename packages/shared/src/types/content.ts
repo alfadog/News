@@ -52,7 +52,7 @@ export interface Source {
   homepageUrl?: string;
   type: 'rss' | 'api' | 'manual';
   fetchConfig?: Record<string, unknown>;
-  trustTier?: 1 | 2 | 3;
+  trustTier?: 1 | 2 | 3 | '1' | '2' | '3';
 }
 
 export interface RawItem {
@@ -66,12 +66,15 @@ export interface RawItem {
   rawHtml?: string;
   language?: string;
   fingerprint?: string;
-  status?: 'new' | 'parsed' | 'error' | 'ignored';
+  status?: 'new' | 'parsed' | 'error' | 'ignored' | 'processed';
+  processedAt?: string;
+  article?: string | Article;
   debug?: Record<string, unknown>;
 }
 
 export interface Story {
   id?: string;
+  slug?: string;
   site: string | Site;
   title: string;
   summary?: string;
@@ -87,6 +90,7 @@ export interface Story {
 
 export interface Article {
   id?: string;
+  slug?: string;
   site: string | Site;
   story?: string | Story;
   section: string | Section;
@@ -99,7 +103,7 @@ export interface Article {
   body: string;
   leadImage?: string;
   gallery?: string[];
-  sourceRefs?: string[];
+  sourceRefs?: Array<{ url: string; label?: string }>;
   aiMeta?: Record<string, unknown>;
   status: 'draft' | 'review' | 'published';
   seo?: {

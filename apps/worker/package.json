@@ -6,8 +6,7 @@
     "dev": "ts-node -r tsconfig-paths/register src/index.ts"
   },
   "dependencies": {
-    "@news/shared": "0.1.0",
-    "node-fetch": "^3.3.2"
+    "@news/shared": "0.1.0"
   },
   "devDependencies": {
     "@types/node": "^20.12.7",

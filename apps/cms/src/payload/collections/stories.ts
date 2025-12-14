@@ -5,6 +5,7 @@ export const Stories: CollectionConfig = {
   admin: { useAsTitle: 'title' },
   access: { read: () => true },
   fields: [
+    { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'site', type: 'relationship', relationTo: 'sites', required: true },
     { name: 'title', type: 'text', required: true },
     { name: 'summary', type: 'textarea' },
