@@ -1,8 +1,26 @@
+import fs from 'fs';
+import path from 'path';
 import dotenv from 'dotenv';
 import { translateAndSummarize } from './handlers/translationHandler';
 import { createLogger } from '@news/shared';
 
-dotenv.config();
+function loadEnv() {
+  const candidates = [
+    path.resolve(process.cwd(), '.env.local'),
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '..', '..', '.env.local'),
+    path.resolve(process.cwd(), '..', '..', '.env')
+  ];
+
+  const match = candidates.find((filePath) => fs.existsSync(filePath));
+  if (match) {
+    dotenv.config({ path: match });
+  } else {
+    dotenv.config();
+  }
+}
+
+loadEnv();
 const logger = createLogger('worker');
 
 async function run() {

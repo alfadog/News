@@ -8,13 +8,15 @@
   ],
   "scripts": {
     "dev:web": "npm run dev --workspace apps/web",
+    "dev:cms": "npm run dev --workspace apps/cms",
     "dev:ingest": "npm run dev --workspace apps/ingest",
     "dev:worker": "npm run dev --workspace apps/worker",
     "build:packages": "npm run build --workspace packages/shared --workspace packages/rules --if-present",
     "build:web": "npm run build:packages && npm run build --workspace apps/web",
+    "build:cms": "npm run build --workspace apps/cms",
     "build": "npm run build:web",
     "lint": "npm run lint --workspace apps/web",
-    "seed": "npm run seed --workspace apps/web",
+    "seed": "npm run seed --workspace apps/cms",
     "vercel-build": "npm run build:web"
   },
   "devDependencies": {

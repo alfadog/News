@@ -1,5 +1,6 @@
 import path from 'path';
 import { buildConfig } from 'payload/config';
+import { postgresAdapter } from '@payloadcms/db-postgres';
 import { Users } from './collections/users';
 import { Sites } from './collections/sites';
 import { Sections } from './collections/sections';
@@ -15,12 +16,19 @@ import { RoutingRules } from './collections/routingRules';
 import { JobRuns } from './collections/jobRuns';
 import { AuditLogs } from './collections/auditLogs';
 
+const adapter = postgresAdapter({
+  pool: {
+    connectionString: process.env.DATABASE_URI
+  }
+});
+
 export default buildConfig({
-  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:3000',
+  serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:4000',
   admin: {
     user: Users.slug,
     disable: false
   },
+  db: adapter,
   collections: [
     Users,
     Sites,

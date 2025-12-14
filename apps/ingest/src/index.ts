@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import dotenv from 'dotenv';
 import { createLogger, RawItem, Source } from '@news/shared';
 import { rssAdapter } from './adapters/rssAdapter';
@@ -6,7 +8,23 @@ import { manualAdapter } from './adapters/manualAdapter';
 import { createRawItem } from './clients/payloadClient';
 import { recordJobRun } from './utils/audit';
 
-dotenv.config();
+function loadEnv() {
+  const candidates = [
+    path.resolve(process.cwd(), '.env.local'),
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '..', '..', '.env.local'),
+    path.resolve(process.cwd(), '..', '..', '.env')
+  ];
+
+  const match = candidates.find((filePath) => fs.existsSync(filePath));
+  if (match) {
+    dotenv.config({ path: match });
+  } else {
+    dotenv.config();
+  }
+}
+
+loadEnv();
 const logger = createLogger('ingest');
 
 const adapters = {

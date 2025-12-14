@@ -1,9 +1,26 @@
+import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import payload from 'payload';
 import { DEFAULT_SITE, DEFAULT_TAXONOMY } from '@news/shared';
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
+function loadEnv() {
+  const candidates = [
+    path.resolve(process.cwd(), '.env.local'),
+    path.resolve(process.cwd(), '.env'),
+    path.resolve(process.cwd(), '..', '..', '.env.local'),
+    path.resolve(process.cwd(), '..', '..', '.env')
+  ];
+
+  const match = candidates.find((filePath) => fs.existsSync(filePath));
+  if (match) {
+    dotenv.config({ path: match });
+  } else {
+    dotenv.config();
+  }
+}
+
+loadEnv();
 
 type CollectionName = 'sites' | 'sections' | 'channels' | 'series';
 

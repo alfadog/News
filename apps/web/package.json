@@ -7,15 +7,12 @@
     "build": "next build",
     "vercel-build": "npm --prefix .. run build:packages && next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed": "ts-node -r tsconfig-paths/register --transpile-only src/seed/seed.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@news/rules": "0.1.0",
     "@news/shared": "0.1.0",
-    "@payloadcms/next": "^2.9.0",
     "next": "14.2.5",
-    "payload": "^2.9.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "rss-parser": "^3.13.0"
