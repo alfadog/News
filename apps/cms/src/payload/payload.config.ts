@@ -1,6 +1,14 @@
 import path from 'path';
 import { buildConfig } from 'payload/config';
-import { postgresAdapter } from '@payloadcms/db-postgres';
+let postgresAdapter: any;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  postgresAdapter = require('@payloadcms/db-postgres').postgresAdapter;
+} catch (error) {
+  // Provide a clearer error in environments where scoped packages are restricted.
+  throw new Error('Install @payloadcms/db-postgres to run the CMS against Postgres.');
+}
+import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { Users } from './collections/users';
 import { Sites } from './collections/sites';
 import { Sections } from './collections/sections';
@@ -18,11 +26,15 @@ import { AuditLogs } from './collections/auditLogs';
 
 const adapter = postgresAdapter({
   pool: {
-    connectionString: process.env.DATABASE_URI
+    connectionString: process.env.DATABASE_URI,
+    max: Number(process.env.DB_POOL_MAX || 5),
+    idleTimeoutMillis: Number(process.env.DB_IDLE_TIMEOUT_MS || 5000),
+    connectionTimeoutMillis: Number(process.env.DB_CONNECTION_TIMEOUT_MS || 5000)
   }
 });
 
 export default buildConfig({
+  editor: lexicalEditor(),
   serverURL: process.env.PAYLOAD_PUBLIC_SERVER_URL ?? 'http://localhost:4000',
   admin: {
     user: Users.slug,

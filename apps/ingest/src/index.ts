@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
-import { createLogger, RawItem, Source } from '@news/shared';
+import { createLogger, RawItem, Source, fingerprintContent } from '@news/shared';
 import { rssAdapter } from './adapters/rssAdapter';
 import { apiAdapter } from './adapters/apiAdapter';
 import { manualAdapter } from './adapters/manualAdapter';
-import { createRawItem } from './clients/payloadClient';
+import { ensureSource, upsertRawItem } from './clients/payloadClient';
 import { recordJobRun } from './utils/audit';
 
 function loadEnv() {
@@ -36,10 +36,17 @@ const adapters = {
 async function ingestSource(source: Source) {
   const adapter = adapters[source.type];
   if (!adapter) throw new Error(`Unsupported adapter type: ${source.type}`);
-  const rawItems = await adapter({ source, siteSlug: 'harpers-bazaar' });
+  const sourceRecord = await ensureSource(source);
+  const rawItems = await adapter({ source: { ...source, id: (sourceRecord as any).id }, siteSlug: 'harpers-bazaar' });
 
   for (const item of rawItems) {
-    await createRawItem(item as RawItem);
+    const prepared: RawItem = {
+      ...item,
+      source: (sourceRecord as any).id || source.id || source.name,
+      fingerprint: item.fingerprint || fingerprintContent(item.sourceUrl),
+      status: 'new'
+    };
+    await upsertRawItem(prepared);
   }
 
   return rawItems.length;

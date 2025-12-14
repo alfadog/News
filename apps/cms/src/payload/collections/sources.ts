@@ -5,6 +5,7 @@ export const Sources: CollectionConfig = {
   admin: { useAsTitle: 'name' },
   access: { read: () => true },
   fields: [
+    { name: 'slug', type: 'text', required: true, unique: true },
     { name: 'name', type: 'text', required: true },
     { name: 'homepageUrl', type: 'text' },
     {
@@ -22,9 +23,9 @@ export const Sources: CollectionConfig = {
       name: 'trustTier',
       type: 'select',
       options: [
-        { label: 'Tier 1', value: 1 },
-        { label: 'Tier 2', value: 2 },
-        { label: 'Tier 3', value: 3 }
+        { label: 'Tier 1', value: '1' },
+        { label: 'Tier 2', value: '2' },
+        { label: 'Tier 3', value: '3' }
       ]
     }
   ]

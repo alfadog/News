@@ -2,14 +2,14 @@
 
 Production-ready skeleton for a multi-site news platform built with Next.js (App Router), Payload CMS v2 (running on Postgres), ingestion and AI worker services. The monorepo now runs Payload as a dedicated Express app alongside the public Next.js site.
 
-## Getting started
-1. Install dependencies from the repo root: `npm install`.
-2. Copy environment defaults: `cp infra/.env.example .env.local` (the services also fall back to `.env`). Adjust secrets and URLs as needed.
+## Getting started (local demo in ~5 commands)
+1. Install dependencies from the repo root: `npm install` (workspaces are supported).
+2. Copy environment defaults: `cp infra/.env.example .env.local` (services also fall back to `.env`). Adjust secrets/URLs as needed.
 3. Start Postgres: `docker compose -f infra/docker-compose.yml up db`.
-4. Start the CMS (Payload admin + REST API on port 4000): `npm run dev:cms`.
-5. Seed the default Harper's Bazaar-style taxonomy: `npm run seed`.
+4. Start the CMS (Payload admin + REST API on port 4000): `npm run dev:cms` and verify `http://localhost:4000/api/health`.
+5. Seed taxonomy + demo content (site, sections/channels, stories, 20+ articles): `npm run seed`.
 6. Start the Next.js site (port 3000) with the API proxy and /admin redirect pointing at the CMS: `npm run dev:web`.
-7. Run ingest + worker in separate terminals for the automation pipeline: `npm run dev:ingest` and `npm run dev:worker`.
+7. Run ingest + worker in separate terminals to add RSS-sourced articles and mark RawItems processed: `npm run dev:ingest` then `npm run dev:worker`.
 
 ## Environment variables
 Set these in `.env.local` (repo root) or `.env`:
@@ -21,15 +21,15 @@ Set these in `.env.local` (repo root) or `.env`:
 
 ## Local routing and API
 - Payload admin: `/admin` (served by `apps/cms`, the web app redirects here).
-- Payload REST API: `/api/*` (the Next.js app proxies to the CMS when `PAYLOAD_PUBLIC_SERVER_URL` is set).
-- Public site routes stay unchanged (home, section/channel pages, articles, stories, series, search, RSS, sitemap).
+- Payload REST API: `/api/*` (the Next.js app proxies to the CMS when `PAYLOAD_PUBLIC_SERVER_URL` is set). Pages will render a clear setup warning if the env var is missing.
+- Public site routes now render live content (home, section/channel pages, articles, stories, series, search, RSS, sitemap).
 
 ## Deployment on Vercel
 Two Vercel projects keep the monorepo split cleanly:
 - **CMS (`apps/cms`)**: Root Directory `apps/cms`, Install Command `npm install`, Build Command `npm run vercel-build`. The included `vercel.json` rewrites all routes to the `api/index.ts` function so `/admin` and `/api/*` work. Set `PAYLOAD_SECRET`, `DATABASE_URI`, `PAYLOAD_PUBLIC_SERVER_URL` (the CMS URL), and optionally `PAYLOAD_REST_URL`/`PAYLOAD_API_KEY`.
 - **Web (`apps/web`)**: Root Directory `apps/web`, Install Command `npm install`, Build Command `npm run vercel-build`. Set `PAYLOAD_PUBLIC_SERVER_URL` (pointing at the CMS deployment) so `/api/*` proxies correctly and `/admin` redirects to the live admin.
 
-`npm run vercel-build` at the repo root still builds packages + the web app (matching the Vercel build for the web project).
+`npm run vercel-build` at the repo root still builds packages + the web app (matching the Vercel build for the web project). The CMS build uses the same config but caps Postgres pool sizes for serverless hosting.
 
 ## Project layout
 - **apps/web**: Next.js site with public pages, RSS, sitemap, and an `/admin` redirect to the CMS.

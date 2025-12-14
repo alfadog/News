@@ -34,6 +34,10 @@ export async function createPayloadServer({ serve = false }: StartOptions = {}) 
     throw new Error('DATABASE_URI must be set to start Payload CMS');
   }
 
+  app.get('/api/health', (_req: any, res: any) => {
+    res.json({ status: 'ok', server: 'payload', url: process.env.PAYLOAD_PUBLIC_SERVER_URL });
+  });
+
   const payloadConfig = (await (payloadConfigPromise ||= import('./payload/payload.config'))).default;
 
   await payload.init({
