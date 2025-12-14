@@ -1,10 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true
-  },
   images: {
     remotePatterns: []
+  },
+  transpilePackages: ['@news/shared', '@news/rules', '@payloadcms/next'],
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: '/api/payload/:path*'
+      }
+    ];
   }
 };
 

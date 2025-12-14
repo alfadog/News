@@ -1,4 +1,4 @@
-import { DEFAULT_TAXONOMY, DEFAULT_SITE, Site, Section, Channel, Article, Story, Series } from '@shared';
+import { DEFAULT_TAXONOMY, DEFAULT_SITE, Site, Section, Channel, Article, Story, Series } from '@news/shared';
 
 const sampleArticles: Article[] = [
   {

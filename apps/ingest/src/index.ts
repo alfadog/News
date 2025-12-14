@@ -1,5 +1,5 @@
 import dotenv from 'dotenv';
-import { createLogger, RawItem, Source } from '@shared';
+import { createLogger, RawItem, Source } from '@news/shared';
 import { rssAdapter } from './adapters/rssAdapter';
 import { apiAdapter } from './adapters/apiAdapter';
 import { manualAdapter } from './adapters/manualAdapter';
@@ -18,7 +18,7 @@ const adapters = {
 async function ingestSource(source: Source) {
   const adapter = adapters[source.type];
   if (!adapter) throw new Error(`Unsupported adapter type: ${source.type}`);
-  const rawItems = await adapter.fetchItems({ source, siteSlug: 'harpers-bazaar' });
+  const rawItems = await adapter({ source, siteSlug: 'harpers-bazaar' });
 
   for (const item of rawItems) {
     await createRawItem(item as RawItem);

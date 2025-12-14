@@ -10,9 +10,12 @@
     "dev:web": "npm run dev --workspace apps/web",
     "dev:ingest": "npm run dev --workspace apps/ingest",
     "dev:worker": "npm run dev --workspace apps/worker",
-    "build": "npm run build --workspace apps/web",
+    "build:packages": "npm run build --workspace packages/shared --workspace packages/rules --if-present",
+    "build:web": "npm run build:packages && npm run build --workspace apps/web",
+    "build": "npm run build:web",
     "lint": "npm run lint --workspace apps/web",
-    "seed": "npm run seed --workspace apps/web"
+    "seed": "npm run seed --workspace apps/web",
+    "vercel-build": "npm run build:web"
   },
   "devDependencies": {
     "typescript": "^5.4.5",

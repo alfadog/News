@@ -10,22 +10,5 @@ services:
       - '5432:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
-  web:
-    build: ../apps/web
-    depends_on:
-      - db
-    environment:
-      DATABASE_URI: postgres://payload:payload@db:5432/payload
-      PAYLOAD_SECRET: dev-secret
-    ports:
-      - '3000:3000'
-  ingest:
-    build: ../apps/ingest
-    environment:
-      PAYLOAD_REST_URL: http://web:3000/api
-  worker:
-    build: ../apps/worker
-    environment:
-      PAYLOAD_REST_URL: http://web:3000/api
 volumes:
   pgdata:

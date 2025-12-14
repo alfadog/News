@@ -1,6 +1,6 @@
 import { MockAiClient } from '../ai/aiClient';
 import { listRawItems, createArticle } from '../clients/payloadClient';
-import { Article } from '@shared';
+import { Article } from '@news/shared';
 
 const ai = new MockAiClient();
 

@@ -1,6 +1,6 @@
 import './globals.css';
 import React from 'react';
-import { DEFAULT_SITE } from '@shared';
+import { DEFAULT_SITE } from '@news/shared';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
