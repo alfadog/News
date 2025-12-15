@@ -13,7 +13,7 @@ Production-ready skeleton for a multi-site news platform built with Next.js (App
 
 ## Core dependency pins
 - `payload@2.32.3`
-- `@payloadcms/db-postgres@1.3.2`
+- `@payloadcms/db-postgres@1.1.2`
 - `@payloadcms/richtext-lexical@1.0.11`
 
 ## Environment variables
