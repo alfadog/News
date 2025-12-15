@@ -11,13 +11,17 @@ Production-ready skeleton for a multi-site news platform built with Next.js (App
 6. Start the Next.js site (port 3000) with the API proxy and /admin redirect pointing at the CMS: `npm run dev:web`.
 7. Run ingest + worker in separate terminals to add RSS-sourced articles and mark RawItems processed: `npm run dev:ingest` then `npm run dev:worker`.
 
+## Core dependency pins
+- `payload@2.32.3`
+- `@payloadcms/db-postgres@1.0.0`
+- `@payloadcms/richtext-lexical@1.0.0`
+
 ## Environment variables
 Set these in `.env.local` (repo root) or `.env`:
-- `PAYLOAD_SECRET` — token for Payload sessions and REST auth.
-- `DATABASE_URI` — Postgres connection string (e.g., `postgres://payload:payload@localhost:5432/payload`).
-- `PAYLOAD_PUBLIC_SERVER_URL` — public URL for the CMS (default `http://localhost:4000`).
-- `PAYLOAD_REST_URL` — optional explicit REST base URL; defaults to `${PAYLOAD_PUBLIC_SERVER_URL}/api`.
-- `PAYLOAD_API_KEY` — optional API key for ingest/worker.
+
+- **Shared**: `PAYLOAD_SECRET` (session token), `PAYLOAD_PUBLIC_SERVER_URL` (CMS base URL, default `http://localhost:4000`), optional `PAYLOAD_REST_URL` (defaults to `${PAYLOAD_PUBLIC_SERVER_URL}/api`), optional `PAYLOAD_API_KEY` for ingest/worker scripts.
+- **CMS / Vercel Function (`apps/cms`)**: `DATABASE_URI` (Postgres connection string), `DB_POOL_MAX` (default 5), `DB_IDLE_TIMEOUT_MS` (default 5000), `DB_CONNECTION_TIMEOUT_MS` (default 5000).
+- **Web (`apps/web`)**: `PAYLOAD_PUBLIC_SERVER_URL` must point at the deployed CMS so API proxying and the `/admin` redirect work.
 
 ## Local routing and API
 - Payload admin: `/admin` (served by `apps/cms`, the web app redirects here).
@@ -26,7 +30,7 @@ Set these in `.env.local` (repo root) or `.env`:
 
 ## Deployment on Vercel
 Two Vercel projects keep the monorepo split cleanly:
-- **CMS (`apps/cms`)**: Root Directory `apps/cms`, Install Command `npm install`, Build Command `npm run vercel-build`. The included `vercel.json` rewrites all routes to the `api/index.ts` function so `/admin` and `/api/*` work. Set `PAYLOAD_SECRET`, `DATABASE_URI`, `PAYLOAD_PUBLIC_SERVER_URL` (the CMS URL), and optionally `PAYLOAD_REST_URL`/`PAYLOAD_API_KEY`.
+- **CMS (`apps/cms`)**: Root Directory `apps/cms`, Install Command `npm install`, Build Command `npm run vercel-build`. The included `vercel.json` rewrites all routes to the `api/index.ts` function so `/admin` and `/api/*` work. Set `PAYLOAD_SECRET`, `DATABASE_URI`, `PAYLOAD_PUBLIC_SERVER_URL` (the CMS URL), optional `PAYLOAD_REST_URL`/`PAYLOAD_API_KEY`, and pool tuning (`DB_POOL_MAX`, `DB_IDLE_TIMEOUT_MS`, `DB_CONNECTION_TIMEOUT_MS`) for serverless Postgres.
 - **Web (`apps/web`)**: Root Directory `apps/web`, Install Command `npm install`, Build Command `npm run vercel-build`. Set `PAYLOAD_PUBLIC_SERVER_URL` (pointing at the CMS deployment) so `/api/*` proxies correctly and `/admin` redirects to the live admin.
 
 `npm run vercel-build` at the repo root still builds packages + the web app (matching the Vercel build for the web project). The CMS build uses the same config but caps Postgres pool sizes for serverless hosting.
@@ -50,6 +54,7 @@ Two Vercel projects keep the monorepo split cleanly:
 - `npm run build` — build shared packages then the web app.
 - `npm run build:cms` — type-check/build the CMS server.
 - `npm run vercel-build` — deterministic build entrypoint for the web deployment (apps/web root directory).
+- `npm run ci:verify` — convenience check for CI: fresh install + web build + CMS build.
 
 ## Pipeline notes
 - Ingest writes `RawItems` via the CMS REST API (`PAYLOAD_REST_URL`).

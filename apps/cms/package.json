@@ -10,15 +10,17 @@
     "vercel-build": "npm run build"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "^2.9.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "payload": "^2.9.0"
+    "@payloadcms/db-postgres": "1.0.0",
+    "@payloadcms/richtext-lexical": "1.0.0",
+    "dotenv": "16.4.5",
+    "express": "4.19.2",
+    "payload": "2.32.3"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.4.5"
+    "@types/node": "20.12.7",
+    "@types/express": "4.17.21",
+    "ts-node": "10.9.2",
+    "tsconfig-paths": "4.2.0",
+    "typescript": "5.4.5"
   }
 }

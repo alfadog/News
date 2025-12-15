@@ -1,13 +1,6 @@
 import path from 'path';
 import { buildConfig } from 'payload/config';
-let postgresAdapter: any;
-try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  postgresAdapter = require('@payloadcms/db-postgres').postgresAdapter;
-} catch (error) {
-  // Provide a clearer error in environments where scoped packages are restricted.
-  throw new Error('Install @payloadcms/db-postgres to run the CMS against Postgres.');
-}
+import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { Users } from './collections/users';
 import { Sites } from './collections/sites';
