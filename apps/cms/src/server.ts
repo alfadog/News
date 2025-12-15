@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import payload from 'payload';
 import dotenv from 'dotenv';
 
@@ -34,7 +34,7 @@ export async function createPayloadServer({ serve = false }: StartOptions = {}) 
     throw new Error('DATABASE_URI must be set to start Payload CMS');
   }
 
-  app.get('/api/health', (_req: any, res: any) => {
+  app.get('/api/health', (_req: Request, res: Response) => {
     res.json({ status: 'ok', server: 'payload', url: process.env.PAYLOAD_PUBLIC_SERVER_URL });
   });
 
