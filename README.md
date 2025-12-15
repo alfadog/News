@@ -13,8 +13,8 @@ Production-ready skeleton for a multi-site news platform built with Next.js (App
 
 ## Core dependency pins
 - `payload@2.32.3`
-- `@payloadcms/db-postgres@1.1.2`
-- `@payloadcms/richtext-lexical@1.0.11`
+- `@payloadcms/db-postgres@1.0.0`
+- `@payloadcms/richtext-lexical@1.0.0`
 
 ## Environment variables
 Set these in `.env.local` (repo root) or `.env`:
@@ -54,6 +54,7 @@ Two Vercel projects keep the monorepo split cleanly:
 - `npm run build` — build shared packages then the web app.
 - `npm run build:cms` — type-check/build the CMS server.
 - `npm run vercel-build` — deterministic build entrypoint for the web deployment (apps/web root directory).
+- `npm run ci:verify` — convenience check for CI: fresh install + web build + CMS build.
 
 ## Pipeline notes
 - Ingest writes `RawItems` via the CMS REST API (`PAYLOAD_REST_URL`).

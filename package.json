@@ -17,7 +17,8 @@
     "build": "npm run build:web",
     "lint": "npm run lint --workspace apps/web",
     "seed": "npm run seed --workspace apps/cms",
-    "vercel-build": "npm run build:web"
+    "vercel-build": "npm run build:web",
+    "ci:verify": "npm install && npm run build:web && npm run build:cms"
   },
   "devDependencies": {
     "typescript": "^5.4.5",
