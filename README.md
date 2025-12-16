@@ -1,6 +1,6 @@
 # News monorepo
 
-Production-ready skeleton for a multi-site news platform built with Next.js (App Router), Payload CMS v2 (running on Postgres), ingestion and AI worker services. The monorepo now runs Payload as a dedicated Express app alongside the public Next.js site.
+Production-ready skeleton for a multi-site news platform built with Next.js (App Router), Payload CMS v3 (running on Postgres), ingestion and AI worker services. The monorepo now runs Payload as a dedicated Express app alongside the public Next.js site.
 
 ## Getting started (local demo in ~5 commands)
 1. Install dependencies from the repo root: `npm install` (workspaces are supported).
@@ -12,9 +12,9 @@ Production-ready skeleton for a multi-site news platform built with Next.js (App
 7. Run ingest + worker in separate terminals to add RSS-sourced articles and mark RawItems processed: `npm run dev:ingest` then `npm run dev:worker`.
 
 ## Core dependency pins
-- `payload@2.32.3`
-- `@payloadcms/db-postgres@1.0.0`
-- `@payloadcms/richtext-lexical@1.0.0`
+- `payload@^3`
+- `@payloadcms/db-postgres@^3`
+- `@payloadcms/richtext-lexical@^3`
 
 ## Environment variables
 Set these in `.env.local` (repo root) or `.env`:
@@ -35,9 +35,14 @@ Two Vercel projects keep the monorepo split cleanly:
 
 `npm run vercel-build` at the repo root still builds packages + the web app (matching the Vercel build for the web project). The CMS build uses the same config but caps Postgres pool sizes for serverless hosting.
 
+## Deployment compatibility
+- Payload's Postgres adapter requires matching major versions across `payload`, `@payloadcms/db-postgres`, and `@payloadcms/richtext-lexical`.
+- The monorepo is aligned on Payload v3; keep those three packages on the same v3 line so `npm install` succeeds locally and on Vercel.
+- When pointing the web app at a deployed CMS, ensure `PAYLOAD_PUBLIC_SERVER_URL` matches the CMS host so `/api/*` and `/admin` rewrites keep working.
+
 ## Project layout
 - **apps/web**: Next.js site with public pages, RSS, sitemap, and an `/admin` redirect to the CMS.
-- **apps/cms**: Express + Payload CMS v2 with Postgres adapter, admin UI, REST API, and seed script.
+- **apps/cms**: Express + Payload CMS v3 with Postgres adapter, admin UI, REST API, and seed script.
 - **apps/ingest**: Ingestion service with RSS/API/manual adapters and audit logging to Payload.
 - **apps/worker**: AI worker producing Articles from RawItems with stored `aiMeta` and prompt references.
 - **packages/shared**: Shared TypeScript types, taxonomy seeds, logging and fingerprint utilities.
